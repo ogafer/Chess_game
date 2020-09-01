@@ -26,11 +26,37 @@
         {
             return pieces[row, column];
         }
+        public Piece piece(Position pos)
+        {
+            return pieces[pos.Row, pos.Column];
+        }
 
         public void PutPiece(Piece p, Position pos)
         {
+            if (PieceExistsInPosition(pos))
+                throw new BoardExceptions("Already exists a piece in this position!");
             pieces[pos.Row, pos.Column] = p;
             p.Position = pos;
+        }
+
+        public bool PositionIsValid(Position pos)
+        {
+            if(pos.Row<0 || pos.Column > Columns || pos.Column < 0 || pos.Column >= Columns)
+                return false;
+
+            return true;
+        }
+
+        public void ValidatePosition(Position pos)
+        {
+            if (!PositionIsValid(pos))
+                throw new BoardExceptions("Position not valid!");
+        }
+
+        public bool PieceExistsInPosition(Position pos)
+        {
+            ValidatePosition(pos);
+            return piece(pos) != null;
         }
 
         #endregion
