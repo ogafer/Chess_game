@@ -12,9 +12,9 @@
 
         #region Constructor
 
-        public Piece(Position position, Board board, Color color)
+        public Piece(Board board, Color color)
         {
-            this.Position = position;
+            this.Position = null;
             this.Board = board;
             this.Color = color;
             this.QuantityOfMovements = 0;

@@ -27,6 +27,12 @@
             return pieces[row, column];
         }
 
+        public void PutPiece(Piece p, Position pos)
+        {
+            pieces[pos.Row, pos.Column] = p;
+            p.Position = pos;
+        }
+
         #endregion
     }
 }
