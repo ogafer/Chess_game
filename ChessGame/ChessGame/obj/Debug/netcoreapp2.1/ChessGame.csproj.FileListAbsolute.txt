@@ -3,7 +3,6 @@ C:\Users\tiago\Desktop\Chess_Game\ChessGame\ChessGame\bin\Debug\netcoreapp2.1\Ch
 C:\Users\tiago\Desktop\Chess_Game\ChessGame\ChessGame\bin\Debug\netcoreapp2.1\ChessGame.runtimeconfig.dev.json
 C:\Users\tiago\Desktop\Chess_Game\ChessGame\ChessGame\bin\Debug\netcoreapp2.1\ChessGame.dll
 C:\Users\tiago\Desktop\Chess_Game\ChessGame\ChessGame\bin\Debug\netcoreapp2.1\ChessGame.pdb
-C:\Users\tiago\Desktop\Chess_Game\ChessGame\ChessGame\obj\Debug\netcoreapp2.1\ChessGame.csprojAssemblyReference.cache
 C:\Users\tiago\Desktop\Chess_Game\ChessGame\ChessGame\obj\Debug\netcoreapp2.1\ChessGame.csproj.CoreCompileInputs.cache
 C:\Users\tiago\Desktop\Chess_Game\ChessGame\ChessGame\obj\Debug\netcoreapp2.1\ChessGame.AssemblyInfoInputs.cache
 C:\Users\tiago\Desktop\Chess_Game\ChessGame\ChessGame\obj\Debug\netcoreapp2.1\ChessGame.AssemblyInfo.cs
