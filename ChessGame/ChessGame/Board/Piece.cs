@@ -20,6 +20,11 @@
             this.QuantityOfMovements = 0;
         }
 
+        public void AddMovementQuantity()
+        {
+            QuantityOfMovements++;
+        }
+
         #endregion
     }
 }

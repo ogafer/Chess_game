@@ -10,18 +10,22 @@ namespace ChessGame
         {
             try
             {
-                Board board = new Board(8, 8); //creating the board
+                ChessMatch chessMatch = new ChessMatch();
 
-                board.PutPiece(new Tower(board, Color.Black), new Position(0, 0));
-                board.PutPiece(new Tower(board, Color.Black), new Position(1, 7));
-                board.PutPiece(new King(board, Color.Black), new Position(1, 1));
+                while(!chessMatch.Finished)
+                {
+                    Console.Clear();
+                    GameWindow.printBoardGame(chessMatch.Board);
 
-                board.PutPiece(new Tower(board, Color.White), new Position(3, 5));
-                board.PutPiece(new King(board, Color.White), new Position(2, 2));
+                    Console.WriteLine();
+                    Console.Write("Origin: ");
+                    Position origin = GameWindow.ReadChessPosition().ToPosition();
+                    Console.Write("Destination: ");
+                    Position destination = GameWindow.ReadChessPosition().ToPosition();
 
-                GameWindow.printBoardGame(board);
+                    chessMatch.ExecuteMovement(origin, destination);
+                }
 
-                Console.ReadLine();
             }
             catch(BoardExceptions e)
             {
