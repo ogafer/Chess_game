@@ -20,6 +20,11 @@ namespace ChessGame
                     Console.WriteLine();
                     Console.Write("Origin: ");
                     Position origin = GameWindow.ReadChessPosition().ToPosition();
+
+                    bool[,] possiblePositions = chessMatch.Board.piece(origin).PossibleMovements();
+                    Console.Clear();
+                    GameWindow.printBoardGame(chessMatch.Board, possiblePositions);
+
                     Console.Write("Destination: ");
                     Position destination = GameWindow.ReadChessPosition().ToPosition();
 

@@ -1,6 +1,6 @@
 ﻿namespace board
 {
-    class Piece
+    abstract class Piece
     {
         #region Attributes
         public Position Position { get; set; }
@@ -24,6 +24,8 @@
         {
             QuantityOfMovements++;
         }
+
+        public abstract bool[,] PossibleMovements();
 
         #endregion
     }

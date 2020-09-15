@@ -21,6 +21,11 @@
 
         #region Methods
 
+        public void DefineValues(int row, int column)
+        {
+            this.Row = row;
+            this.Column = column;
+        }
         public override string ToString()
         {
             return Row + "," + Column;
