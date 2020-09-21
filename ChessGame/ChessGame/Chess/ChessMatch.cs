@@ -6,8 +6,8 @@ namespace Chess
     {
         #region Attributes
         public Board Board { get; private set; }
-        private int Turn;
-        private Color CurrentPlayer;
+        public int Turn { get; private set; }
+        public Color CurrentPlayer { get; private set; }
         public bool Finished { get; private set; }
         #endregion
 
@@ -31,6 +31,49 @@ namespace Chess
             piece.AddMovementQuantity();
             Piece capturePiece = Board.RemovePart(destination);
             Board.PutPiece(piece, destination);
+        }
+
+        public void MakeTheMovement(Position origin, Position destination)
+        {
+            ExecuteMovement(origin, destination);
+            Turn++;
+            ChangePlayer();
+        }
+
+        public void ChangePlayer()
+        {
+            if(CurrentPlayer == Color.White)
+            {
+                CurrentPlayer = Color.Black;
+            }
+            else
+            {
+                CurrentPlayer = Color.White;
+            }
+        }
+
+        public void ValidateOriginPosition(Position position)
+        {
+            if(Board.piece(position) == null)
+            {
+                throw new BoardExceptions("Doesn't exist a piece in the origin selected!");
+            }
+            if(CurrentPlayer != Board.piece(position).Color)
+            {
+                throw new BoardExceptions("The selected piece is not yours!");
+            }
+            if(!Board.piece(position).ExistPossibleMovements())
+            {
+                throw new BoardExceptions("There is no possible movements for the selected piece!");
+            }
+        }
+
+        public void ValidateDestinationPosition(Position origin, Position destination)
+        {
+            if(!Board.piece(origin).PieceCanMoveToPosition(destination))
+            {
+                throw new BoardExceptions("Destination position not valid!");
+            }
         }
 
         private void InsertPieces()

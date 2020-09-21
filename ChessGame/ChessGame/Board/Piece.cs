@@ -25,6 +25,26 @@
             QuantityOfMovements++;
         }
 
+        public bool ExistPossibleMovements()
+        {
+            bool[,] mat = PossibleMovements();
+            for (int i = 0; i < Board.Rows; i++)
+            {
+                for (int j = 0; j < Board.Columns; j++)
+                {
+                    if (mat[i, j])
+                    {
+                        return true;
+                    }
+                }
+            }
+            return false;
+        }
+
+        public bool PieceCanMoveToPosition(Position position)
+        {
+            return PossibleMovements()[position.Row, position.Column];
+        }
         public abstract bool[,] PossibleMovements();
 
         #endregion

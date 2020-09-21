@@ -14,21 +14,34 @@ namespace ChessGame
 
                 while(!chessMatch.Finished)
                 {
-                    Console.Clear();
-                    GameWindow.printBoardGame(chessMatch.Board);
+                    try
+                    {
+                        Console.Clear();
+                        GameWindow.printBoardGame(chessMatch.Board);
+                        Console.WriteLine();
+                        Console.WriteLine("Turn: " + chessMatch.Turn);
+                        Console.WriteLine("Waiting for: " + chessMatch.CurrentPlayer);
 
-                    Console.WriteLine();
-                    Console.Write("Origin: ");
-                    Position origin = GameWindow.ReadChessPosition().ToPosition();
 
-                    bool[,] possiblePositions = chessMatch.Board.piece(origin).PossibleMovements();
-                    Console.Clear();
-                    GameWindow.printBoardGame(chessMatch.Board, possiblePositions);
+                        Console.WriteLine();
+                        Console.Write("Origin: ");
+                        Position origin = GameWindow.ReadChessPosition().ToPosition();
+                        chessMatch.ValidateOriginPosition(origin);
 
-                    Console.Write("Destination: ");
-                    Position destination = GameWindow.ReadChessPosition().ToPosition();
+                        bool[,] possiblePositions = chessMatch.Board.piece(origin).PossibleMovements();
+                        Console.Clear();
+                        GameWindow.printBoardGame(chessMatch.Board, possiblePositions);
 
-                    chessMatch.ExecuteMovement(origin, destination);
+                        Console.Write("Destination: ");
+                        Position destination = GameWindow.ReadChessPosition().ToPosition();
+                        chessMatch.ValidateDestinationPosition(origin, destination);
+                        chessMatch.MakeTheMovement(origin, destination);
+                    }
+                    catch(BoardExceptions ex)
+                    {
+                        Console.WriteLine(ex.Message);
+                        Console.ReadLine();
+                    }
                 }
 
             }
