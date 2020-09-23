@@ -8,7 +8,42 @@ namespace ChessGame
 {
     class GameWindow
     {
-        public static void printBoardGame(Board board)
+        public static void PrintChessMatch(ChessMatch chessMatch)
+        {
+            GameWindow.PrintBoardGame(chessMatch.Board);
+            Console.WriteLine();
+            PrintCapturedPieces(chessMatch);
+            Console.WriteLine();
+            Console.WriteLine("Turn: " + chessMatch.Turn);
+            Console.WriteLine("Waiting for: " + chessMatch.CurrentPlayer);
+        }
+
+        public static void PrintCapturedPieces(ChessMatch chessMatch)
+        {
+            Console.WriteLine("Captured pieces: ");
+            Console.Write("White: ");
+            PrintPiecesGroup(chessMatch.CapturedPieces(Color.White));
+            Console.WriteLine();
+            Console.Write("Black: ");
+            ConsoleColor aux = Console.ForegroundColor;
+            Console.ForegroundColor = ConsoleColor.Blue;
+            PrintPiecesGroup(chessMatch.CapturedPieces(Color.Black));
+            Console.ForegroundColor = aux;
+            Console.WriteLine();
+        }
+
+        public static void PrintPiecesGroup(HashSet<Piece> group)
+        {
+            Console.Write("[");
+            foreach (Piece x in group)
+            {
+                Console.Write(x + " ");
+            }
+            Console.Write("]");
+        }
+
+
+        public static void PrintBoardGame(Board board)
         {
             for (int i = 0; i < board.Rows; i++)
             {
@@ -22,7 +57,7 @@ namespace ChessGame
             Console.WriteLine("    A B C D E F G H");
         }
 
-        public static void printBoardGame(Board board, bool[,] possiblePositions)
+        public static void PrintBoardGame(Board board, bool[,] possiblePositions)
         {
             ConsoleColor actualBackground = Console.BackgroundColor;
             ConsoleColor changeBackground = ConsoleColor.DarkGray;

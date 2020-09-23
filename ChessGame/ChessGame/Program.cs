@@ -17,10 +17,7 @@ namespace ChessGame
                     try
                     {
                         Console.Clear();
-                        GameWindow.printBoardGame(chessMatch.Board);
-                        Console.WriteLine();
-                        Console.WriteLine("Turn: " + chessMatch.Turn);
-                        Console.WriteLine("Waiting for: " + chessMatch.CurrentPlayer);
+                        GameWindow.PrintChessMatch(chessMatch);
 
 
                         Console.WriteLine();
@@ -30,7 +27,7 @@ namespace ChessGame
 
                         bool[,] possiblePositions = chessMatch.Board.piece(origin).PossibleMovements();
                         Console.Clear();
-                        GameWindow.printBoardGame(chessMatch.Board, possiblePositions);
+                        GameWindow.PrintBoardGame(chessMatch.Board, possiblePositions);
 
                         Console.Write("Destination: ");
                         Position destination = GameWindow.ReadChessPosition().ToPosition();

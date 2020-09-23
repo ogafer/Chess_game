@@ -1,4 +1,4 @@
-﻿using System;
+﻿using System.Collections.Generic;
 using board;
 namespace Chess
 {
@@ -9,6 +9,8 @@ namespace Chess
         public int Turn { get; private set; }
         public Color CurrentPlayer { get; private set; }
         public bool Finished { get; private set; }
+        private HashSet<Piece> pieces;
+        private HashSet<Piece> capturedPieces;
         #endregion
 
         #region Constructor
@@ -17,6 +19,8 @@ namespace Chess
             Board = new Board(8, 8);
             Turn = 1;
             CurrentPlayer = Color.White;
+            pieces = new HashSet<Piece>();
+            capturedPieces = new HashSet<Piece>();
             InsertPieces();
             Finished = false;
         }
@@ -31,6 +35,8 @@ namespace Chess
             piece.AddMovementQuantity();
             Piece capturePiece = Board.RemovePart(destination);
             Board.PutPiece(piece, destination);
+            if (capturePiece != null)
+                capturedPieces.Add(capturePiece);
         }
 
         public void MakeTheMovement(Position origin, Position destination)
@@ -51,6 +57,34 @@ namespace Chess
                 CurrentPlayer = Color.White;
             }
         }
+
+        public HashSet<Piece> CapturedPieces(Color color)
+        {
+            HashSet<Piece> aux = new HashSet<Piece>();
+            foreach(Piece x in capturedPieces)
+            {
+                if(x.Color == color)
+                {
+                    aux.Add(x);
+                }
+            }
+            return aux;
+        }
+
+        public HashSet<Piece> PiecesInGame(Color color)
+        {
+            HashSet<Piece> aux = new HashSet<Piece>();
+            foreach (Piece x in capturedPieces)
+            {
+                if (x.Color == color)
+                {
+                    aux.Add(x);
+                }
+            }
+            aux.ExceptWith(CapturedPieces(color));
+            return aux;
+        }
+
 
         public void ValidateOriginPosition(Position position)
         {
@@ -76,21 +110,28 @@ namespace Chess
             }
         }
 
+        public void InsertNewPiece(char column, int row, Piece piece)
+        {
+            Board.PutPiece(piece, new BoardPosition(column, row).ToPosition());
+            pieces.Add(piece);
+        }
+
         private void InsertPieces()
         {
-            Board.PutPiece(new Tower(Board, Color.White), new BoardPosition('c', 1).ToPosition());
-            Board.PutPiece(new Tower(Board, Color.White), new BoardPosition('c', 2).ToPosition());
-            Board.PutPiece(new Tower(Board, Color.White), new BoardPosition('d', 2).ToPosition());
-            Board.PutPiece(new Tower(Board, Color.White), new BoardPosition('e', 2).ToPosition());
-            Board.PutPiece(new Tower(Board, Color.White), new BoardPosition('e', 1).ToPosition());
-            Board.PutPiece(new King(Board, Color.White), new BoardPosition('d', 1).ToPosition());
+            InsertNewPiece('c', 1, new Tower(Board, Color.White));
+            InsertNewPiece('c', 2, new Tower(Board, Color.White));
+            InsertNewPiece('d', 2, new Tower(Board, Color.White));
+            InsertNewPiece('e', 2, new Tower(Board, Color.White));
+            InsertNewPiece('e', 1, new Tower(Board, Color.White));
+            InsertNewPiece('d', 1, new King(Board, Color.White));
 
-            Board.PutPiece(new Tower(Board, Color.Black), new BoardPosition('c', 7).ToPosition());
-            Board.PutPiece(new Tower(Board, Color.Black), new BoardPosition('c', 8).ToPosition());
-            Board.PutPiece(new Tower(Board, Color.Black), new BoardPosition('d', 7).ToPosition());
-            Board.PutPiece(new Tower(Board, Color.Black), new BoardPosition('e', 7).ToPosition());
-            Board.PutPiece(new Tower(Board, Color.Black), new BoardPosition('e', 8).ToPosition());
-            Board.PutPiece(new King(Board, Color.Black), new BoardPosition('d', 8).ToPosition());
+
+            InsertNewPiece('c', 7, new Tower(Board, Color.Black));
+            InsertNewPiece('c', 8, new Tower(Board, Color.Black));
+            InsertNewPiece('d', 7, new Tower(Board, Color.Black));
+            InsertNewPiece('e', 7, new Tower(Board, Color.Black));
+            InsertNewPiece('e', 8, new Tower(Board, Color.Black));
+            InsertNewPiece('d', 8, new King(Board, Color.Black));
         }
         #endregion
 
