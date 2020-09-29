@@ -11,6 +11,7 @@ namespace Chess
         public bool Finished { get; private set; }
         private HashSet<Piece> pieces;
         private HashSet<Piece> capturedPieces;
+        public bool Check { get; private set; }
         #endregion
 
         #region Constructor
@@ -20,6 +21,7 @@ namespace Chess
             Turn = 1;
             CurrentPlayer = Color.White;
             pieces = new HashSet<Piece>();
+            Check = false;
             capturedPieces = new HashSet<Piece>();
             InsertPieces();
             Finished = false;
@@ -29,7 +31,7 @@ namespace Chess
 
         #region Methods
 
-        public void ExecuteMovement(Position origin, Position destination)
+        public Piece ExecuteMovement(Position origin, Position destination)
         {
             Piece piece = Board.RemovePart(origin);
             piece.AddMovementQuantity();
@@ -37,11 +39,34 @@ namespace Chess
             Board.PutPiece(piece, destination);
             if (capturePiece != null)
                 capturedPieces.Add(capturePiece);
+            return capturePiece;
+        }
+
+        public void UndoMovement(Position origin, Position destination, Piece capturedPiece)
+        {
+            Piece p = Board.RemovePart(destination);
+            p.RemoveMovementQuantity();
+            if(capturedPiece != null)
+            {
+                Board.PutPiece(capturedPiece, destination);
+                capturedPieces.Remove(capturedPiece);
+            }
+            Board.PutPiece(p, origin);
         }
 
         public void MakeTheMovement(Position origin, Position destination)
         {
-            ExecuteMovement(origin, destination);
+            Piece capturedPiece = ExecuteMovement(origin, destination);
+
+            if(ItsInCheck(CurrentPlayer))
+            {
+                UndoMovement(origin, destination, capturedPiece);
+                throw new BoardExceptions("Can´t put yourself in check!");
+            }
+            if (ItsInCheck(FoeColor(CurrentPlayer)))
+                Check = true;
+            else
+                Check = false;
             Turn++;
             ChangePlayer();
         }
@@ -74,7 +99,7 @@ namespace Chess
         public HashSet<Piece> PiecesInGame(Color color)
         {
             HashSet<Piece> aux = new HashSet<Piece>();
-            foreach (Piece x in capturedPieces)
+            foreach (Piece x in pieces)
             {
                 if (x.Color == color)
                 {
@@ -108,6 +133,38 @@ namespace Chess
             {
                 throw new BoardExceptions("Destination position not valid!");
             }
+        }
+
+        private Color FoeColor(Color color)
+        {
+            if (color == Color.White)
+                return Color.Black;
+            else
+                return Color.White;
+        }
+
+        private Piece King(Color color)
+        {
+            foreach (Piece x in PiecesInGame(color))
+            {
+                if(x is King)
+                    return x;
+            }
+            return null;
+        }
+
+        public bool ItsInCheck(Color color)
+        {
+            Piece k = King(color);
+            if (k == null)
+                throw new BoardExceptions("Doesn't have king with the color " + color);
+            foreach (Piece x in PiecesInGame(FoeColor(color)))
+            {
+                bool[,] matrix = x.PossibleMovements();
+                if (matrix[k.Position.Row, k.Position.Column])
+                    return true;
+            }
+            return false;
         }
 
         public void InsertNewPiece(char column, int row, Piece piece)
